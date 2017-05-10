@@ -38,10 +38,13 @@ public class JmsQueueReceiver {
 		try {
 			MessageConsumer messageConsumer = session.createConsumer(destination);
 			TextMessage mssg = (TextMessage) messageConsumer.receive(100);
+			int counter = 0;
 			while (mssg != null) {
-				log.info("recived " + mssg.getText());
+				log.info("recived: " + mssg.getText());
+				++counter;
 				mssg = (TextMessage) messageConsumer.receive(100);
 			}
+			log.info("count: " + String.valueOf(counter));
 		} catch (JMSException e) {
 			log.error("failed");
 		} 
