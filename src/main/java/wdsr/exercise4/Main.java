@@ -4,6 +4,7 @@ import javax.jms.DeliveryMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import wdsr.exercise4.receiver.JmsQueueReceiver;
 import wdsr.exercise4.sender.JmsSender;
 
 public class Main {
@@ -11,6 +12,10 @@ public class Main {
 	final static Logger logger = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String[] args) {
+		sender();
+	}
+	
+	private static void sender(){
 		JmsSender jmsSender = new JmsSender(QUEUE_NAME);
 
 		countTimeAndLog(() -> {
@@ -27,11 +32,17 @@ public class Main {
 
 		jmsSender.shutdown();
 	}
-
+	
 	private static void countTimeAndLog(Runnable runnable, String message) {
 		long begTime = System.currentTimeMillis();
 		runnable.run();
 		long executeTime = System.currentTimeMillis() - begTime;
 		logger.info(String.format(message, executeTime));
+	}
+	
+	private static void receiver(){
+		JmsQueueReceiver receiver = new JmsQueueReceiver(QUEUE_NAME);
+		receiver.recive();
+		receiver.shutdown();
 	}
 }
